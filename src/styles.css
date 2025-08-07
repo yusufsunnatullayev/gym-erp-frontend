@@ -1,1 +1,92 @@
-/* You can add global styles to this file, and also import other style files */
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
+@import "tailwindcss";
+@plugin "tailwindcss-primeui";
+@custom-variant dark (&:where(.my-app-dark, .my-app-dark *));
+
+@theme {
+  /* Primary colors */
+  --color-primary-main: #cb3cff;
+  --color-primary-lightHover: #d063f7;
+  --color-primary-darkHover: #bc14f7;
+
+  /* Gradient */
+  --color-gradient-primary: linear-gradient(140deg, #cb3cff 20%, #7f25fb 68%);
+
+  /* Secondary colors */
+  --color-secondary-slate: #0b1739;
+  --color-secondary-purple: #8951ff;
+  --color-secondary-sky: #21c3fc;
+  --color-secondary-blue: #0e43fb;
+  --color-secondary-yellow: #fdb52a;
+
+  /* Neutral colors */
+  --color-neutral-800: #081028;
+  --color-neutral-700: #0a1330;
+  --color-neutral-600: #0b1739;
+  --color-neutral-500: #7e89ac;
+  --color-neutral-400: #aeb9e1;
+  --color-neutral-300: #d1dbf9;
+  --color-neutral-200: #d9e1fa;
+  --color-neutral-100: #ffffff;
+}
+
+html {
+  background: #fafbfc;
+  color: var(--p-neutral-800);
+
+  &.my-app-dark {
+    background: var(--p-neutral-800);
+    color: var(--p-neutral-100);
+  }
+}
+
+body {
+  font-family: "Montserrat", sans-serif;
+  font-optical-sizing: auto;
+}
+
+.auth-bg {
+  background-image: url("./app/assets/images/auth-bg.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 100vh;
+  width: 100%;
+}
+
+.text-white {
+  color: var(--p-neutral-100);
+}
+
+.text-gradient {
+  background: linear-gradient(90deg, #6c72ff 0%, #9a91fb 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+}
+
+.bg-gradient {
+  background: linear-gradient(90deg, #6c72ff 0%, #9a91fb 100%);
+}
+
+.bg-neutral-800 {
+  background-color: var(--p-neutral-800);
+}
+
+.nav-popover {
+  width: 125px;
+  height: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nav-logout {
+  width: 110px;
+  height: 30px;
+}
+
+html.my-app-dark p-datepicker .p-inputtext {
+  background-color: var(--p-neutral-800);
+}

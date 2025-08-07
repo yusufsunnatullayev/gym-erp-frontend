@@ -1,0 +1,51 @@
+<section class="w-full h-screen flex items-center justify-center auth-bg">
+  <form
+    [formGroup]="authForm"
+    (ngSubmit)="onSubmit()"
+    class="w-1/4 p-5 flex flex-col gap-5 rounded-md bg-secondary-slate/50 text-white backdrop-blur-md"
+  >
+    <h1 class="text-3xl font-bold text-center my-2">Login</h1>
+
+    <div class="flex flex-col gap-2">
+      <label for="username">Username</label>
+      <input
+        pSize="small"
+        pInputText
+        id="username"
+        placeholder="Enter username..."
+        style="background: var(--p-secondary-slate); color: #fff; border: none"
+        formControlName="username"
+      />
+      @if (username?.invalid && (username?.touched)) {
+      <span class="text-sm text-red-500">
+        @if (username?.errors?.['required']) { Username is required. }
+      </span>
+      }
+    </div>
+
+    <div class="flex flex-col gap-2">
+      <label for="password">Password</label>
+      <input
+        pSize="small"
+        pInputText
+        id="password"
+        type="password"
+        placeholder="Enter password..."
+        style="background: var(--p-secondary-slate); color: #fff; border: none"
+        formControlName="password"
+      />
+      @if (password?.invalid && (password?.touched)) {
+      <span class="text-sm text-red-500">
+        @if (password?.errors?.['required']) { Password is required. }
+      </span>
+      }
+    </div>
+
+    <p-button
+      type="submit"
+      [disabled]="!authForm.valid || (loadingService.loading$ | async)"
+      [label]="(loadingService.loading$ | async) ? 'Logging in...' : 'Log in'"
+      styleClass="w-full mt-4"
+    />
+  </form>
+</section>

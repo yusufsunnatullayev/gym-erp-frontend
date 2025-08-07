@@ -1,0 +1,48 @@
+<section class="w-full p-5 flex flex-col gap-5">
+  <h1 class="text-2xl font-semibold">Members</h1>
+  <div class="w-full flex items-center justify-between">
+    <div class="flex items-center gap-2">
+      <p-select
+        [options]="statusOptions"
+        [(ngModel)]="status"
+        optionLabel="name"
+        placeholder="Select a status"
+        class="w-full md:w-44 dark:bg-neutral-800"
+        size="small"
+      />
+      <p-select
+        [options]="statusOptions"
+        [(ngModel)]="status"
+        optionLabel="name"
+        placeholder="Select a coach"
+        class="w-full md:w-44 dark:bg-neutral-800"
+        size="small"
+      />
+      <p-select
+        [options]="statusOptions"
+        [(ngModel)]="status"
+        optionLabel="name"
+        placeholder="Select a plan"
+        class="w-full md:w-44 dark:bg-neutral-800"
+        size="small"
+      />
+    </div>
+    <p-iconfield
+      iconPosition="left"
+      class="ml-auto flex items-center rounded-md pl-2 p-1.5 gap-2 border-[0.5px] border-[#CBD5E1] dark:border-[#52525B] bg-white dark:bg-neutral-800"
+    >
+      <lucide-icon
+        [img]="searchIcon"
+        [size]="18"
+        color="gray"
+        class="my-icon"
+      ></lucide-icon>
+      <input
+        pInputText
+        type="text"
+        placeholder="Search..."
+        class="border-none focus:outline-none rounded-r-md placeholder:text-gray-400 text-sm font-medium"
+      />
+    </p-iconfield>
+  </div>
+</section>

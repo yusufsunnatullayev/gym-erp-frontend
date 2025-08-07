@@ -1,0 +1,73 @@
+src/
+├── app/
+│
+│   ├── core/                          # App-wide core logic (loaded once)
+│   │   ├── services/
+│   │   │   ├── auth.service.ts
+│   │   │   ├── http.interceptor.ts
+│   │   ├── guards/
+│   │   │   └── auth.guard.ts
+│   │   └── core.config.ts             # Provide singleton services
+│
+│   ├── shared/                        # Reusable UI components/pipes/etc.
+│   │   ├── components/
+│   │   │   ├── card/
+│   │   │   ├── table/
+│   │   │   ├── modal/
+│   │   ├── directives/
+│   │   ├── pipes/
+│   │   └── shared.config.ts
+│
+│   ├── layout/                        # App shell
+│   │   ├── sidebar.component.ts
+│   │   ├── header.component.ts
+│   │   └── layout.component.ts
+│
+│   ├── state/                         # Global state using signals
+│   │   ├── auth/
+│   │   │   ├── auth.signal.ts
+│   │   │   └── auth.model.ts
+│   │   ├── ui/
+│   │   │   └── theme.signal.ts
+│
+│   ├── features/                      # All feature-specific logic
+│   │
+│   │   ├── dashboard/
+│   │   │   ├── pages/
+│   │   │   │   └── dashboard.component.ts
+│   │   │   ├── dashboard.routes.ts
+│   │   │   └── dashboard.service.ts
+│   │
+│   │   ├── members/
+│   │   │   ├── pages/
+│   │   │   │   ├── members-list.component.ts
+│   │   │   │   ├── member-form.component.ts
+│   │   │   ├── services/
+│   │   │   │   └── member.api.ts
+│   │   │   ├── state/
+│   │   │   │   └── member.signal.ts
+│   │   │   ├── models/
+│   │   │   │   └── member.model.ts
+│   │   │   └── members.routes.ts
+│   │
+│   │   ├── coaches/
+│   │   │   └── same as members/
+│   │
+│   │   ├── plans/
+│   │   ├── product-types/
+│   │   ├── products/
+│   │   └── settings/
+│   │       ├── pages/
+│   │       │   └── settings.component.ts
+│   │       └── settings.routes.ts
+│
+│   ├── app.routes.ts                  # Top-level routing config
+│   └── bootstrap.ts                   # bootstrapApplication() config
+│
+├── environments/
+│   ├── environment.ts
+│   └── environment.prod.ts
+│
+├── assets/
+├── styles/                            # Tailwind or global SCSS
+└── main.ts

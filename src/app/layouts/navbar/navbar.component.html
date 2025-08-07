@@ -1,0 +1,55 @@
+<nav
+  class="w-full bg-white dark:bg-[#060d24] py-4 px-5 flex items-center justify-between shadow-[0_0.2px_0.5px_rgba(0,0,0,0.25)]"
+>
+  <h1 class="text-xl font-semibold text-secondary-slate dark:text-white">
+    Welcome back, {{ adminData()?.username }}
+  </h1>
+
+  <div class="flex items-center gap-5">
+    <button
+      class="cursor-pointer duration-200 shadow-sm shadow-primary-main p-2 rounded-md"
+      (click)="toggleDarkMode()"
+    >
+      @if(isDarkMode()) {
+      <lucide-icon [img]="Sun" [size]="15" class="my-icon"></lucide-icon>
+      } @else {
+      <lucide-icon [img]="Moon" [size]="15" class="my-icon"></lucide-icon>
+      }
+    </button>
+
+    <div
+      class="flex items-center cursor-pointer gap-2"
+      (click)="togglePopover($event)"
+    >
+      @if(adminData()?.profilePic !== ''){
+      <img
+        class="w-10 h-10 rounded-full object-cover"
+        [src]="adminData()?.profilePic"
+        alt="profile picture"
+      />
+      } @else {
+      <div class="p-2 rounded-full border">
+        <lucide-icon [img]="User" [size]="20" class="my-icon"></lucide-icon>
+      </div>
+      }
+      <div class="flex flex-col">
+        <h1 class="text-sm font-medium">{{ adminData()?.username }}</h1>
+        <span class="text-xs">Admin</span>
+      </div>
+    </div>
+
+    <p-popover #op styleClass="nav-popover">
+      <div class="flex flex-col gap-4">
+        <div>
+          <p-button
+            styleClass="nav-logout"
+            size="small"
+            label="Log out"
+            severity="danger"
+            (click)="logout()"
+          ></p-button>
+        </div>
+      </div>
+    </p-popover>
+  </div>
+</nav>

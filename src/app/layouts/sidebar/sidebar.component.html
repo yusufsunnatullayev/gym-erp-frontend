@@ -1,0 +1,58 @@
+<section
+  class="w-72 h-[100vh] bg-white dark:bg-[#060d24] flex flex-col justify-between shadow pb-5"
+>
+  <div class="flex flex-col gap-10">
+    <h1 class="text-3xl text-primary-main font-bold m-7 mb-0">GIGANT GYM</h1>
+    <ul class="space-y-2">
+      @for(item of sidebarItems; track item.id) {
+      <div
+        [routerLink]="item.link"
+        class="flex items-center cursor-pointer justify-start gap-3 pr-5 group hover:text-white"
+      >
+        <div
+          class="w-[6px] h-12 group-hover:bg-primary-main rounded-r-xl duration-200"
+          [ngClass]="{
+            'bg-primary-main': item.link === currentUrl(),
+            'bg-transparent': item.link !== currentUrl()
+          }"
+        ></div>
+        <li
+          class="w-full flex items-center justify-start gap-3 py-3 px-5 rounded-lg dark:group-hover:bg-neutral-700 group-hover:bg-primary-main duration-200"
+          [ngClass]="{
+            'bg-primary-main dark:bg-neutral-700 text-white':
+              item.link === currentUrl()
+          }"
+        >
+          <lucide-icon [img]="item.icon" class="my-icon"></lucide-icon>
+          <a class="text-base font-semibold">{{ item.name }}</a>
+        </li>
+      </div>
+
+      }
+    </ul>
+  </div>
+  <ul>
+    <div
+      routerLink="/dashboard/settings"
+      class="flex items-center cursor-pointer justify-start gap-3 pr-5 group hover:text-white"
+    >
+      <div
+        class="w-[6px] h-12 group-hover:bg-primary-main rounded-r-xl duration-200"
+        [ngClass]="{
+          'bg-primary-main': '/dashboard/settings' === currentUrl(),
+          'bg-transparent': '/dashboard/settings' !== currentUrl()
+        }"
+      ></div>
+      <li
+        class="w-full flex items-center justify-start gap-3 py-3 px-5 rounded-lg dark:group-hover:bg-neutral-700 group-hover:bg-primary-main duration-200"
+        [ngClass]="{
+          'bg-primary-main dark:bg-neutral-700 text-white':
+            '/dashboard/settings' === currentUrl()
+        }"
+      >
+        <lucide-icon [img]="Settings" class="my-icon"></lucide-icon>
+        <a class="text-base font-semibold">Settigns</a>
+      </li>
+    </div>
+  </ul>
+</section>
