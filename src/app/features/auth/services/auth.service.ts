@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, switchMap, tap } from 'rxjs';
-import { environment } from '@environments/environment.prod';
 import { AuthModel } from '../models/auth.model';
+import { environment } from 'environments/environment';
 
 @Injectable({
   providedIn: 'root',
