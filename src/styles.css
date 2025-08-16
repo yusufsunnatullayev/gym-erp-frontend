@@ -89,4 +89,6 @@ body {
 
 html.my-app-dark p-datepicker .p-inputtext {
   background-color: var(--p-neutral-800);
+  border: none;
+  border-radius: 20px;
 }

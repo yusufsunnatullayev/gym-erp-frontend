@@ -1,8 +1,9 @@
 <nav
-  class="w-full bg-white dark:bg-[#060d24] py-4 px-5 flex items-center justify-between shadow-[0_0.2px_0.5px_rgba(0,0,0,0.25)]"
+  style="width: calc(100vw - 288px)"
+  class="fixed top-0 right-0 z-10 bg-white dark:bg-[#060d24] py-4 px-5 flex items-center justify-between shadow-[0_0.2px_0.5px_rgba(0,0,0,0.25)]"
 >
   <h1 class="text-xl font-semibold text-secondary-slate dark:text-white">
-    Welcome back, {{ adminData()?.username }}
+    Welcome back, {{ authService.profile()?.username }}
   </h1>
 
   <div class="flex items-center gap-5">
@@ -11,9 +12,9 @@
       (click)="toggleDarkMode()"
     >
       @if(isDarkMode()) {
-      <lucide-icon [img]="Sun" [size]="15" class="my-icon"></lucide-icon>
+      <lucide-icon [img]="SunIcon" [size]="15" class="my-icon"></lucide-icon>
       } @else {
-      <lucide-icon [img]="Moon" [size]="15" class="my-icon"></lucide-icon>
+      <lucide-icon [img]="MoonIcon" [size]="15" class="my-icon"></lucide-icon>
       }
     </button>
 
@@ -21,19 +22,21 @@
       class="flex items-center cursor-pointer gap-2"
       (click)="togglePopover($event)"
     >
-      @if(adminData()?.profilePic !== ''){
+      @if(authService.profile()?.profilePic !== ''){
       <img
         class="w-10 h-10 rounded-full object-cover"
-        [src]="adminData()?.profilePic"
+        [src]="authService.profile()?.profilePic"
         alt="profile picture"
       />
       } @else {
       <div class="p-2 rounded-full border">
-        <lucide-icon [img]="User" [size]="20" class="my-icon"></lucide-icon>
+        <lucide-icon [img]="UserIcon" [size]="20" class="my-icon"></lucide-icon>
       </div>
       }
       <div class="flex flex-col">
-        <h1 class="text-sm font-medium">{{ adminData()?.username }}</h1>
+        <h1 class="text-sm font-medium">
+          {{ authService.profile()?.username }}
+        </h1>
         <span class="text-xs">Admin</span>
       </div>
     </div>
@@ -46,7 +49,7 @@
             size="small"
             label="Log out"
             severity="danger"
-            (click)="logout()"
+            (click)="authService.logout()"
           ></p-button>
         </div>
       </div>

@@ -1,5 +1,23 @@
 <section class="w-full p-5 flex flex-col gap-5">
-  <h1 class="text-2xl font-semibold">Members</h1>
+  <div class="w-full flex items-center justify-between mb-2">
+    <h1 class="text-2xl font-semibold">Members</h1>
+    <button
+      (click)="showDialog()"
+      pButton
+      class="dark:text-white text-sm font-medium"
+    >
+      <lucide-icon
+        [img]="Plus"
+        [size]="20"
+        color="white"
+        class="my-icon"
+      ></lucide-icon>
+      <span pButtonLabel>Add member</span>
+    </button>
+  </div>
+
+  @if(loadingService.loading$ | async) { <app-loader />
+  } @else {
   <div class="w-full flex items-center justify-between">
     <div class="flex items-center gap-2">
       <p-select
@@ -45,4 +63,19 @@
       />
     </p-iconfield>
   </div>
+
+  <app-table
+    [columns]="columns"
+    [data]="data()"
+    [rows]="5"
+    [hasDetailPage]="true"
+    (rowButtonClick)="handleRowClick($event)"
+  />
+
+  }
+
+  <app-add-member
+    [visible]="dialogVisible"
+    (visibleChange)="dialogVisible = $event"
+  />
 </section>

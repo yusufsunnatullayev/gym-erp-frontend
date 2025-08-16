@@ -4,7 +4,6 @@ import { Popover, PopoverModule } from 'primeng/popover';
 import { LucideAngularModule, Moon, Sun, User } from 'lucide-angular';
 import { AuthService } from '../../features/auth/services/auth.service';
 import { CommonModule } from '@angular/common';
-import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   imports: [CommonModule, ButtonModule, PopoverModule, LucideAngularModule],
@@ -13,12 +12,11 @@ import { toSignal } from '@angular/core/rxjs-interop';
   standalone: true,
 })
 export class NavbarComponent implements OnInit {
-  private authService = inject(AuthService);
+  authService = inject(AuthService);
   @ViewChild('op') popover!: Popover;
-  readonly Moon = Moon;
-  readonly Sun = Sun;
-  readonly User = User;
-  adminData = toSignal(this.authService.profile$);
+  readonly MoonIcon = Moon;
+  readonly SunIcon = Sun;
+  readonly UserIcon = User;
   isDarkMode = signal(localStorage.getItem('mode') === 'dark');
 
   ngOnInit(): void {
@@ -32,12 +30,6 @@ export class NavbarComponent implements OnInit {
 
   togglePopover(event: Event) {
     this.popover.toggle({ currentTarget: event.currentTarget as HTMLElement });
-  }
-
-  logout() {
-    localStorage.removeItem('adminProfile');
-    sessionStorage.removeItem('access_token');
-    window.location.href = '/login';
   }
 
   toggleDarkMode() {

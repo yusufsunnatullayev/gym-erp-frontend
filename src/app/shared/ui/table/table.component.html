@@ -1,0 +1,125 @@
+<div class="card">
+  <p-table
+    #dt
+    [value]="data"
+    [paginator]="true"
+    [paginatorStyleClass]="'dark:bg-[#060d24]'"
+    [styleClass]="'shadow rounded-lg'"
+    [rows]="rows"
+    [rowsPerPageOptions]="[5, 10, 25]"
+    [responsiveLayout]="'scroll'"
+  >
+    <ng-template pTemplate="header">
+      <tr>
+        @for(col of columns; track col.id) {
+        <th
+          [ngClass]="{
+            'rounded-tl-lg': col.id === 1,
+            'dark:bg-[#060d24] dark:text-gray-400': true
+          }"
+        >
+          {{ col.header }}
+        </th>
+        }
+        <th
+          class="rounded-tr-lg flex justify-end pr-14 dark:bg-[#060d24] dark:text-gray-400"
+        >
+          Actions
+        </th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-rowData>
+      <tr>
+        @for(col of columns; track col.id) { @if(col.field === 'startDate') {
+        <td class="dark:bg-[#060d24]">
+          {{ rowData[col.field] | date : "dd-MM-yyyy" }}
+        </td>
+        }@else if(rowData[col.field] === 'PAID') {
+        <td class="dark:bg-[#060d24]">
+          <div
+            class="w-16 py-1 text-xs rounded-md flex items-center justify-center font-medium text-green-600 bg-green-400/30"
+          >
+            {{ rowData[col.field] }}
+          </div>
+        </td>
+        }@else if(rowData[col.field] === 'UNPAID') {
+        <td class="dark:bg-[#060d24]">
+          <div
+            class="w-16 py-1 text-xs rounded-md flex items-center justify-center font-medium text-red-600 bg-red-400/30"
+          >
+            {{ rowData[col.field] }}
+          </div>
+        </td>
+        } @else if(col.field === 'price') {
+        <td class="dark:bg-[#060d24]">
+          {{ rowData[col.field] | currency }}
+        </td>
+        } @else if(col.field === 'members') {
+        <td class="dark:bg-[#060d24]">
+          {{ rowData[col.field]?.length || "0" }}
+        </td>
+        } @else {
+        <td class="dark:bg-[#060d24]">
+          {{ rowData[col.field] }}
+        </td>
+        } }
+
+        <td class="flex justify-end pr-12 dark:bg-[#060d24]">
+          @if(hasDetailPage) {
+          <button
+            (click)="
+              onButtonClick({ action_type: 'navigate', id: rowData['id'] })
+            "
+            class="rounded-md py-1.5 px-4 flex items-center justify-center bg-gray-100 hover:text-white dark:bg-neutral-700 cursor-pointer hover:bg-secondary-purple duration-150 mr-3"
+          >
+            <lucide-icon
+              size="15"
+              [img]="ArrowRight"
+              class="my-icon"
+            ></lucide-icon>
+          </button>
+          } @else {
+          <div class="flex gap-2">
+            <button
+              (click)="
+                onButtonClick({ action_type: 'edit', id: rowData['id'] })
+              "
+              class="w-7 h-7 rounded-full flex items-center justify-center bg-gray-100 hover:text-white dark:bg-neutral-700 cursor-pointer hover:bg-secondary-purple duration-150"
+            >
+              <lucide-icon
+                size="15"
+                [img]="Pencil"
+                class="my-icon"
+              ></lucide-icon>
+            </button>
+            <button
+              (click)="
+                onButtonClick({ action_type: 'delete', id: rowData['id'] })
+              "
+              class="w-7 h-7 rounded-full flex items-center justify-center bg-gray-100 hover:text-white dark:bg-neutral-700 cursor-pointer hover:bg-red-500 duration-150"
+            >
+              <lucide-icon
+                size="15"
+                [img]="Trash"
+                class="my-icon"
+              ></lucide-icon>
+            </button>
+          </div>
+          }
+        </td>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td
+          class="w-full flex justify-center dark:bg-[#060d24]"
+          [attr.colspan]="columns.length"
+        >
+          No data found.
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>

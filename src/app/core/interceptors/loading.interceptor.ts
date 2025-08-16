@@ -5,7 +5,18 @@ import { LoadingService } from '../services/loading.service';
 
 export const loadingInterceptor: HttpInterceptorFn = (req, next) => {
   const loadingService = inject(LoadingService);
-  loadingService.show();
 
-  return next(req).pipe(finalize(() => loadingService.hide()));
+  const isGetRequest = req.method.toUpperCase() === 'GET';
+
+  if (isGetRequest) {
+    loadingService.show();
+  }
+
+  return next(req).pipe(
+    finalize(() => {
+      if (isGetRequest) {
+        loadingService.hide();
+      }
+    })
+  );
 };

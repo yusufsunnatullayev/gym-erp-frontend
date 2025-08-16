@@ -1,7 +1,7 @@
-<main class="w-full h-[100vh] flex items-start justify-between">
+<main class="w-full h-[100vh] flex items-start justify-between overflow-hidden">
   <app-sidebar></app-sidebar>
 
-  <div class="flex-1 h-full flex flex-col">
+  <div class="relative flex-1 h-full flex flex-col gap-9 overflow-y-auto">
     <app-navbar></app-navbar>
     <router-outlet></router-outlet>
   </div>

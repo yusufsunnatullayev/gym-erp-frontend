@@ -43,9 +43,9 @@
 
     <p-button
       type="submit"
-      [disabled]="!authForm.valid || (loadingService.loading$ | async)"
-      [label]="(loadingService.loading$ | async) ? 'Logging in...' : 'Log in'"
-      styleClass="w-full mt-4"
+      [disabled]="!authForm.valid || authService.loading()"
+      [label]="authService.loading() ? 'Logging in...' : 'Log in'"
+      styleClass="w-full mt-4 text-white"
     />
   </form>
 </section>

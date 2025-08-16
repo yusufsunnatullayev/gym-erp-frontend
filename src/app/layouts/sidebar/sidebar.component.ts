@@ -2,7 +2,6 @@ import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import {
   LucideAngularModule,
-  FileIcon,
   LayoutDashboard,
   Users,
   NotebookPen,
@@ -30,7 +29,7 @@ export class SidebarComponent {
       map((event) => event.url)
     )
   );
-  readonly FileIcon = FileIcon;
+
   readonly LayoutDashboard = LayoutDashboard;
   readonly Users = Users;
   readonly NotebookPen = NotebookPen;
@@ -38,6 +37,7 @@ export class SidebarComponent {
   readonly ShoppingBasket = ShoppingBasket;
   readonly FileType = FileType;
   readonly Settings = Settings;
+
   readonly sidebarItems = [
     {
       id: 1,

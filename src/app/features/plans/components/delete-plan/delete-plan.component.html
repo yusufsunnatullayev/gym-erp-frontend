@@ -1,0 +1,31 @@
+<p-dialog
+  [modal]="true"
+  [(visible)]="visible"
+  [style]="{ width: '25rem' }"
+  (onHide)="visible.set(false)"
+  styleClass="dark:bg-neutral-800/50 dark:backdrop-blur-md"
+>
+  <div class="w-full flex flex-col items-center gap-10">
+    <h1 class="text-xl font-medium">Are you sure to delete the plan?</h1>
+    <div class="w-full flex items-center justify-between gap-3">
+      <button
+        [disabled]="loading()"
+        (click)="visible.set(false)"
+        type="submit"
+        pButton
+        class="w-full border-none text-sm font-medium bg-secondary-slate text-white hover:opacity-80 duration-200"
+      >
+        <span pButtonLabel>No</span>
+      </button>
+      <button
+        [disabled]="loading()"
+        (click)="onDelete()"
+        type="submit"
+        pButton
+        class="w-full border-none text-sm font-medium bg-red-500 text-white hover:opacity-80 duration-200"
+      >
+        <span pButtonLabel>{{ loading() ? "Deleting..." : "Yes, I am" }}</span>
+      </button>
+    </div>
+  </div>
+</p-dialog>

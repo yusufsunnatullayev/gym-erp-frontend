@@ -1,29 +1,21 @@
 import { Component, inject } from '@angular/core';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
-import { AsyncPipe, CommonModule } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
-import { LoadingService } from '@core/services/loading.service';
 import { ToastService } from '@core/services/toast.service';
 
 @Component({
-  imports: [
-    CommonModule,
-    InputTextModule,
-    ButtonModule,
-    ReactiveFormsModule,
-    AsyncPipe,
-  ],
+  imports: [CommonModule, InputTextModule, ButtonModule, ReactiveFormsModule],
   selector: 'app-login',
   templateUrl: './login.component.html',
 })
 export class LoginComponent {
+  authService = inject(AuthService);
   private router = inject(Router);
   private formBuilder = inject(FormBuilder);
-  private authService = inject(AuthService);
-  public loadingService = inject(LoadingService);
   private toastService = inject(ToastService);
   authForm = this.formBuilder.group({
     username: ['', Validators.required],

@@ -1,1 +1,57 @@
-<h1>Plans</h1>
+<section class="w-full p-5 flex flex-col gap-5">
+  <div class="w-full flex items-center justify-between mb-2">
+    <h1 class="text-2xl font-semibold">Plans</h1>
+    <button
+      (click)="showAddDialog()"
+      pButton
+      class="dark:text-white text-sm font-medium"
+    >
+      <lucide-icon
+        [img]="PlusIcon"
+        [size]="20"
+        color="white"
+        class="my-icon"
+      ></lucide-icon>
+      <span pButtonLabel>Add plan</span>
+    </button>
+  </div>
+
+  @if(plansService.loading()) { <app-loader />
+  } @else {
+  <div class="w-full flex justify-end">
+    <p-iconfield
+      iconPosition="left"
+      class="ml-auto flex items-center rounded-md pl-2 p-1.5 gap-2 border-[0.5px] border-[#CBD5E1] dark:border-[#52525B] bg-white dark:bg-neutral-800"
+    >
+      <lucide-icon
+        [img]="SearchIcon"
+        [size]="18"
+        color="gray"
+        class="my-icon"
+      ></lucide-icon>
+      <input
+        pInputText
+        type="text"
+        placeholder="Search..."
+        class="border-none focus:outline-none rounded-r-md placeholder:text-gray-400 text-sm font-medium"
+        (input)="onSearchInput($event)"
+      />
+    </p-iconfield>
+  </div>
+
+  <!-- Table that shows plans 🚩 -->
+  <app-table
+    [columns]="columns"
+    [data]="plansService.plans() || []"
+    [rows]="5"
+    [hasDetailPage]="false"
+    (rowButtonClick)="handleRowClick($event)"
+  />
+
+  }
+
+  <!-- Modals 🚩 -->
+  <app-delete-plan [(visible)]="deleteDialogVisible" [id]="selectedId()" />
+  <app-update-plan [(visible)]="updateDialogVisible" [id]="selectedId()" />
+  <app-add-plan [(visible)]="addDialogVisible" />
+</section>
