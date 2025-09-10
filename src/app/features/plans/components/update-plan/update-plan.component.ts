@@ -7,7 +7,6 @@ import {
   effect,
   model,
 } from '@angular/core';
-import { Dialog } from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputMaskModule } from 'primeng/inputmask';
@@ -22,6 +21,8 @@ import {
 } from '@angular/forms';
 import { PlansService } from '../../services/plans.service';
 import { PlanModel } from '../../model/plan.model';
+import { ModalComponent } from '@app/shared/ui/modal/modal.component';
+import { ToastService } from '@app/core/services/toast.service';
 
 interface Duration {
   name: string;
@@ -30,7 +31,6 @@ interface Duration {
 
 @Component({
   imports: [
-    Dialog,
     ButtonModule,
     InputTextModule,
     InputMaskModule,
@@ -38,6 +38,7 @@ interface Duration {
     Select,
     InputNumber,
     ReactiveFormsModule,
+    ModalComponent,
   ],
   selector: 'app-update-plan',
   templateUrl: './update-plan.component.html',
@@ -48,6 +49,7 @@ export class UpdateComponent implements OnInit {
   id = input<string>('');
 
   plansService = inject(PlansService);
+  toastService = inject(ToastService);
   planDetail = signal<PlanModel | null>(null);
 
   private loadPlan(id: string) {
@@ -111,10 +113,12 @@ export class UpdateComponent implements OnInit {
           this.visible.set(false);
           this.form.reset();
           this.loading.set(false);
+          this.toastService.success('Success', 'Plan updated!');
         },
         error: (err) => {
           console.error('Error adding plan:', err);
           this.loading.set(false);
+          this.toastService.error('Error', 'Failed to update plan!');
         },
       });
     } else {

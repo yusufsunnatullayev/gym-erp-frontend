@@ -2,12 +2,12 @@
   <div class="w-full flex items-center justify-between mb-2">
     <h1 class="text-2xl font-semibold">Members</h1>
     <button
-      (click)="showDialog()"
+      (click)="showAddDialog()"
       pButton
       class="dark:text-white text-sm font-medium"
     >
       <lucide-icon
-        [img]="Plus"
+        [img]="PlusIcon"
         [size]="20"
         color="white"
         class="my-icon"
@@ -16,7 +16,7 @@
     </button>
   </div>
 
-  @if(loadingService.loading$ | async) { <app-loader />
+  @if(isInitialLoading) { <app-loader />
   } @else {
   <div class="w-full flex items-center justify-between">
     <div class="flex items-center gap-2">
@@ -24,22 +24,25 @@
         [options]="statusOptions"
         [(ngModel)]="status"
         optionLabel="name"
+        optionValue="code"
         placeholder="Select a status"
         class="w-full md:w-44 dark:bg-neutral-800"
         size="small"
       />
       <p-select
-        [options]="statusOptions"
-        [(ngModel)]="status"
+        [options]="coaches()"
+        [(ngModel)]="coach"
         optionLabel="name"
+        optionValue="code"
         placeholder="Select a coach"
         class="w-full md:w-44 dark:bg-neutral-800"
         size="small"
       />
       <p-select
-        [options]="statusOptions"
-        [(ngModel)]="status"
+        [options]="plans()"
+        [(ngModel)]="plan"
         optionLabel="name"
+        optionValue="code"
         placeholder="Select a plan"
         class="w-full md:w-44 dark:bg-neutral-800"
         size="small"
@@ -50,7 +53,7 @@
       class="ml-auto flex items-center rounded-md pl-2 p-1.5 gap-2 border-[0.5px] border-[#CBD5E1] dark:border-[#52525B] bg-white dark:bg-neutral-800"
     >
       <lucide-icon
-        [img]="searchIcon"
+        [img]="SearchIcon"
         [size]="18"
         color="gray"
         class="my-icon"
@@ -60,22 +63,31 @@
         type="text"
         placeholder="Search..."
         class="border-none focus:outline-none rounded-r-md placeholder:text-gray-400 text-sm font-medium"
+        (input)="onSearchInput($event)"
+        [value]="search()"
+        [disabled]="isSearchLoading"
       />
     </p-iconfield>
   </div>
 
   <app-table
     [columns]="columns"
-    [data]="data()"
-    [rows]="5"
-    [hasDetailPage]="true"
+    [data]="membersService.members()"
+    [rows]="perPage()"
+    [hasDetailPage]="false"
     (rowButtonClick)="handleRowClick($event)"
+  />
+
+  <app-pagination
+    [totalPages]="membersService.members().meta.total_pages"
+    [perPage]="perPage()"
+    [(page)]="page"
   />
 
   }
 
-  <app-add-member
-    [visible]="dialogVisible"
-    (visibleChange)="dialogVisible = $event"
-  />
+  <!-- Modals -->
+  <app-add-member [(visible)]="addDialogVisible" />
+  <app-delete-member [(visible)]="deleteDialogVisible" [id]="selectedId()" />
+  <app-update-member [(visible)]="updateDialogVisible" [id]="selectedId()" />
 </section>

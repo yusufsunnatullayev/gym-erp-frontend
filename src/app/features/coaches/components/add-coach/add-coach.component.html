@@ -1,56 +1,54 @@
-<app-modal [(visible)]="visible" header="Add plan">
+<app-modal [(visible)]="visible" header="Add coach">
   <form
     [formGroup]="form"
     (ngSubmit)="onSubmit()"
     class="w-full flex flex-col gap-5"
   >
     <div class="flex flex-col gap-2">
-      <label for="name">Name</label>
+      <label for="fullName">Full Name</label>
       <input
         pSize="small"
         pInputText
-        id="name"
-        placeholder="Premium"
+        id="fullName"
+        placeholder="John Doe"
         class="bg-gray-50 dark:bg-neutral-800 dark:text-white border-none"
-        formControlName="name"
+        formControlName="fullName"
       />
-      @if (form.get('name')?.touched && form.get('name')?.invalid) {
+      @if (form.get('fullName')?.touched && form.get('fullName')?.invalid) {
       <span class="text-sm text-red-500">
-        @if (name?.errors?.['required']) { Name is required. }
+        @if (fullName?.errors?.['required']) { Full Name is required. }
       </span>
       }
     </div>
     <div class="flex flex-col gap-2">
-      <label for="duration">Duration</label>
-      <p-select
+      <label for="phoneNumber">Phone Number</label>
+      <p-inputmask
+        mask="(99)-999-99-99"
+        placeholder="(99)-999-99-99"
         size="small"
-        [options]="durations()"
-        optionLabel="name"
-        optionValue="code"
-        placeholder="Select a duration"
-        appendTo="body"
-        class="bg-gray-50 dark:bg-neutral-800 dark:text-white border-none"
-        formControlName="duration"
-      ></p-select>
-
-      @if (form.get('duration')?.touched && form.get('duration')?.invalid) {
+        styleClass="w-full dark:bg-neutral-800 dark:text-white border-none"
+        formControlName="phoneNumber"
+      />
+      @if (form.get('phoneNumber')?.touched && form.get('phoneNumber')?.invalid)
+      {
       <span class="text-sm text-red-500">
-        @if (durationControl?.errors?.['required']) { Duration is required. }
+        @if (phoneNumber?.errors?.['required']) { Phone Number is required. }
       </span>
       }
     </div>
+
     <div class="flex flex-col gap-2">
-      <label for="price">Price</label>
+      <label for="salary">Salary ($)</label>
       <p-inputnumber
         size="small"
         inputId="integeronly"
         placeholder="13"
         inputStyleClass="bg-gray-50 dark:bg-neutral-800 dark:text-white border-none"
-        formControlName="price"
+        formControlName="salary"
       />
-      @if (form.get('price')?.touched && form.get('price')?.invalid) {
+      @if (form.get('salary')?.touched && form.get('salary')?.invalid) {
       <span class="text-sm text-red-500">
-        @if (price?.errors?.['required']) { Price is required. }
+        @if (salary?.errors?.['required']) { Salary is required. }
       </span>
       }
     </div>

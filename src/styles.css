@@ -6,6 +6,7 @@
 @theme {
   /* Primary colors */
   --color-primary-main: #cb3cff;
+  --color-primary-dark: #060d24;
   --color-primary-lightHover: #d063f7;
   --color-primary-darkHover: #bc14f7;
 

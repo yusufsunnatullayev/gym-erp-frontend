@@ -1,18 +1,18 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { environment } from '@environments/environment';
-import { finalize, catchError, throwError, tap, Observable } from 'rxjs';
-import { PlanModel } from '../model/plan.model';
+import { CoachModel } from '../model/coach.model';
 import { Data } from '@app/shared/ui/table/table.model';
+import { catchError, finalize, Observable, tap, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
-export class PlansService {
+export class CoachesService {
   private http$ = inject(HttpClient);
-  private api$ = `${environment.apiUrl}/plans`;
+  private api$ = `${environment.apiUrl}/coaches`;
 
-  private _plans = signal<Data<PlanModel[]>>({
+  private _coaches = signal<Data<CoachModel[]>>({
     data: [],
     meta: {
       total: 0,
@@ -21,7 +21,7 @@ export class PlansService {
       per_page: 0,
     },
   });
-  plans = computed(() => this._plans());
+  coaches = computed(() => this._coaches());
 
   private _loading = signal(false);
   loading = computed(() => this._loading());
@@ -35,7 +35,7 @@ export class PlansService {
   private _initialized = signal(false);
   initialized = computed(() => this._initialized());
 
-  fetchPlans(
+  fetchCoaches(
     page: number = 1,
     perPage: number = 10,
     searchTerm: string = '',
@@ -57,7 +57,7 @@ export class PlansService {
       params = params.set('q', searchTerm.trim());
     }
 
-    return this.http$.get<Data<PlanModel[]>>(this.api$, { params }).pipe(
+    return this.http$.get<Data<CoachModel[]>>(this.api$, { params }).pipe(
       finalize(() => {
         if (isSearch) {
           this._searchLoading.set(false);
@@ -67,34 +67,34 @@ export class PlansService {
         this._initialized.set(true);
       }),
       catchError((err) => {
-        const errorMessage = err.error?.message || 'Failed to load plans';
+        const errorMessage = err.error?.message || 'Failed to load coaches';
         this._error.set(errorMessage);
         return throwError(() => err);
       }),
       tap((data) => {
-        this._plans.set(data);
+        this._coaches.set(data);
       })
     );
   }
 
-  getPlanById(id: string): Observable<PlanModel> {
+  getCoachById(id: string): Observable<CoachModel> {
     this._error.set(null);
-    return this.http$.get<PlanModel>(`${this.api$}/${id}`).pipe(
+    return this.http$.get<CoachModel>(`${this.api$}/${id}`).pipe(
       catchError((err) => {
-        this._error.set(err.error?.message || 'Failed to get plan');
+        this._error.set(err.error?.message || 'Failed to get coach');
         return throwError(() => err);
       })
     );
   }
 
-  addPlan(plan: Omit<PlanModel, 'id'>) {
+  addCoach(coach: Omit<CoachModel, 'id'>) {
     this._error.set(null);
 
-    return this.http$.post<PlanModel>(`${this.api$}`, plan).pipe(
-      tap((newPlan) => {
-        this._plans.update((curr) => ({
+    return this.http$.post<CoachModel>(`${this.api$}`, coach).pipe(
+      tap((newCoach) => {
+        this._coaches.update((curr) => ({
           ...curr,
-          data: [newPlan, ...curr.data],
+          data: [newCoach, ...curr.data],
           meta: {
             ...curr.meta,
             total: curr.meta.total + 1,
@@ -102,35 +102,35 @@ export class PlansService {
         }));
       }),
       catchError((err) => {
-        this._error.set(err.error?.message || 'Failed to add plan');
+        this._error.set(err.error?.message || 'Failed to add coach');
         return throwError(() => err);
       })
     );
   }
 
-  updatePlan(id: string, plan: Partial<PlanModel>) {
+  updateCoach(id: string, coach: Partial<CoachModel> | FormData) {
     this._error.set(null);
 
-    return this.http$.patch<PlanModel>(`${this.api$}/${id}`, plan).pipe(
-      tap((updatedPlan) => {
-        this._plans.update((curr) => ({
+    return this.http$.patch<CoachModel>(`${this.api$}/${id}`, coach).pipe(
+      tap((updatedCoach) => {
+        this._coaches.update((curr) => ({
           ...curr,
-          data: curr.data.map((p) => (p.id === id ? updatedPlan : p)),
+          data: curr.data.map((p) => (p.id === id ? updatedCoach : p)),
         }));
       }),
       catchError((err) => {
-        this._error.set(err.error?.message || 'Failed to update plan');
+        this._error.set(err.error?.message || 'Failed to update coach');
         return throwError(() => err);
       })
     );
   }
 
-  deletePlan(id: string) {
+  deleteCoach(id: string) {
     this._error.set(null);
 
     return this.http$.delete<void>(`${this.api$}/${id}`).pipe(
       tap(() => {
-        this._plans.update((curr) => ({
+        this._coaches.update((curr) => ({
           ...curr,
           data: curr.data.filter((p) => p.id !== id),
           meta: {
@@ -140,7 +140,7 @@ export class PlansService {
         }));
       }),
       catchError((err) => {
-        this._error.set(err.error?.message || 'Failed to delete plan');
+        this._error.set(err.error?.message || 'Failed to delete coach');
         return throwError(() => err);
       })
     );
@@ -148,7 +148,7 @@ export class PlansService {
 
   // Utility method to reset state
   reset() {
-    this._plans.set({
+    this._coaches.set({
       data: [],
       meta: {
         total: 0,

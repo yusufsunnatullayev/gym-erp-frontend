@@ -53,6 +53,13 @@ export const routes: Routes = [
           ),
       },
       {
+        path: 'coaches/:id',
+        loadComponent: () =>
+          import('./features/coaches/coach-detail/coach-detail.component').then(
+            (c) => c.CoachDetailComponent
+          ),
+      },
+      {
         path: 'products',
         loadComponent: () =>
           import('./features/products/page/products.component').then(

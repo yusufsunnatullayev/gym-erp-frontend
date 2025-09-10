@@ -3,7 +3,6 @@ import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputMaskModule } from 'primeng/inputmask';
 import { DatePickerModule } from 'primeng/datepicker';
-import { Select } from 'primeng/select';
 import { InputNumber } from 'primeng/inputnumber';
 import {
   FormBuilder,
@@ -11,14 +10,9 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { PlansService } from '../../services/plans.service';
 import { ModalComponent } from '@app/shared/ui/modal/modal.component';
 import { ToastService } from '@app/core/services/toast.service';
-
-interface Duration {
-  name: string;
-  code: string;
-}
+import { CoachesService } from '../../services/coaches.service';
 
 @Component({
   imports: [
@@ -26,74 +20,55 @@ interface Duration {
     InputTextModule,
     InputMaskModule,
     DatePickerModule,
-    Select,
     InputNumber,
     ReactiveFormsModule,
     ModalComponent,
   ],
-  selector: 'app-add-plan',
-  templateUrl: './add-plan.component.html',
+  selector: 'app-add-coach',
+  templateUrl: './add-coach.component.html',
   standalone: true,
 })
-export class AddPlanComponent implements OnInit {
+export class AddCoachComponent implements OnInit {
   visible = model<boolean>(false);
-  plansService = inject(PlansService);
+  coachService = inject(CoachesService);
   toastService = inject(ToastService);
 
   form!: FormGroup;
-  durations = signal<Duration[]>([
-    {
-      name: 'Once',
-      code: 'ONCE',
-    },
-    {
-      name: 'Monthly',
-      code: 'MONTHLY',
-    },
-    {
-      name: 'Semi-annual',
-      code: 'SEMIANNUAL',
-    },
-    {
-      name: 'Annual',
-      code: 'ANNUAL',
-    },
-  ]);
   loading = signal(false);
   constructor(private fb: FormBuilder) {}
 
   ngOnInit(): void {
     this.form = this.fb.group({
-      name: ['', Validators.required],
-      duration: [null, Validators.required],
-      price: [null, [Validators.required, Validators.min(0)]],
+      fullName: ['', Validators.required],
+      phoneNumber: [null, Validators.required],
+      salary: [null, [Validators.required, Validators.min(0)]],
     });
   }
 
-  get name() {
-    return this.form.get('name');
+  get fullName() {
+    return this.form.get('fullName');
   }
-  get durationControl() {
-    return this.form.get('duration');
+  get phoneNumber() {
+    return this.form.get('phoneNumber');
   }
-  get price() {
-    return this.form.get('price');
+  get salary() {
+    return this.form.get('salary');
   }
 
   onSubmit(): void {
     if (this.form.valid) {
       this.loading.set(true);
-      this.plansService.addPlan(this.form.value).subscribe({
+      this.coachService.addCoach(this.form.value).subscribe({
         next: () => {
           this.visible.set(false);
           this.form.reset();
           this.loading.set(false);
-          this.toastService.success('Success', 'Plan added!');
+          this.toastService.success('Success', 'Coach added!');
         },
         error: (err) => {
           console.error('Error adding plan:', err);
           this.loading.set(false);
-          this.toastService.error('Error', 'Failed to add new plan!');
+          this.toastService.error('Error', 'Failed to add new coach!');
         },
       });
     } else {

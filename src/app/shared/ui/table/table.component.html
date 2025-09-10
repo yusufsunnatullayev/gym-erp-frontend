@@ -1,9 +1,9 @@
 <div class="card">
   <p-table
     #dt
-    [value]="data"
-    [paginator]="true"
-    [paginatorStyleClass]="'dark:bg-[#060d24]'"
+    [value]="data.data"
+    [paginator]="false"
+    [paginatorStyleClass]="'dark:bg-primary-dark'"
     [styleClass]="'shadow rounded-lg'"
     [rows]="rows"
     [rowsPerPageOptions]="[5, 10, 25]"
@@ -15,14 +15,14 @@
         <th
           [ngClass]="{
             'rounded-tl-lg': col.id === 1,
-            'dark:bg-[#060d24] dark:text-gray-400': true
+            'dark:bg-primary-dark dark:text-gray-400': true
           }"
         >
           {{ col.header }}
         </th>
         }
         <th
-          class="rounded-tr-lg flex justify-end pr-14 dark:bg-[#060d24] dark:text-gray-400"
+          class="rounded-tr-lg flex justify-end pr-14 dark:bg-primary-dark dark:text-gray-400"
         >
           Actions
         </th>
@@ -32,11 +32,11 @@
     <ng-template pTemplate="body" let-rowData>
       <tr>
         @for(col of columns; track col.id) { @if(col.field === 'startDate') {
-        <td class="dark:bg-[#060d24]">
+        <td class="dark:bg-primary-dark">
           {{ rowData[col.field] | date : "dd-MM-yyyy" }}
         </td>
         }@else if(rowData[col.field] === 'PAID') {
-        <td class="dark:bg-[#060d24]">
+        <td class="dark:bg-primary-dark">
           <div
             class="w-16 py-1 text-xs rounded-md flex items-center justify-center font-medium text-green-600 bg-green-400/30"
           >
@@ -44,28 +44,36 @@
           </div>
         </td>
         }@else if(rowData[col.field] === 'UNPAID') {
-        <td class="dark:bg-[#060d24]">
+        <td class="dark:bg-primary-dark">
           <div
             class="w-16 py-1 text-xs rounded-md flex items-center justify-center font-medium text-red-600 bg-red-400/30"
           >
             {{ rowData[col.field] }}
           </div>
         </td>
-        } @else if(col.field === 'price') {
-        <td class="dark:bg-[#060d24]">
+        } @else if(col.field === 'price' || col.field === 'salary') {
+        <td class="dark:bg-primary-dark">
           {{ rowData[col.field] | currency }}
         </td>
-        } @else if(col.field === 'members') {
-        <td class="dark:bg-[#060d24]">
+        } @else if(col.field === 'members' || col.field === 'students') {
+        <td class="dark:bg-primary-dark">
           {{ rowData[col.field]?.length || "0" }}
         </td>
+        } @else if(col.field === 'coach') {
+        <td class="dark:bg-primary-dark">
+          {{ rowData[col.field]?.fullName }}
+        </td>
+        } @else if(col.field === 'plan') {
+        <td class="dark:bg-primary-dark">
+          {{ rowData[col.field]?.name }}
+        </td>
         } @else {
-        <td class="dark:bg-[#060d24]">
+        <td class="dark:bg-primary-dark">
           {{ rowData[col.field] }}
         </td>
         } }
 
-        <td class="flex justify-end pr-12 dark:bg-[#060d24]">
+        <td class="flex justify-end pr-12 dark:bg-primary-dark">
           @if(hasDetailPage) {
           <button
             (click)="
@@ -107,17 +115,6 @@
             </button>
           </div>
           }
-        </td>
-      </tr>
-    </ng-template>
-
-    <ng-template pTemplate="emptymessage">
-      <tr>
-        <td
-          class="w-full flex justify-center dark:bg-[#060d24]"
-          [attr.colspan]="columns.length"
-        >
-          No data found.
         </td>
       </tr>
     </ng-template>

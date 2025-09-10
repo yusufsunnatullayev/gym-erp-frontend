@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { ActionInfo, Column } from './table.model';
+import { ActionInfo, Column, Data } from './table.model';
 import { TableModule } from 'primeng/table';
 import { PaginatorModule } from 'primeng/paginator';
 import { InputTextModule } from 'primeng/inputtext';
@@ -27,7 +27,7 @@ import {
 })
 export class TableComponent {
   @Input() columns: Column[] = [];
-  @Input() data: any[] = [];
+  @Input() data!: Data<any>;
   @Input() rows: number = 10;
   @Input() hasDetailPage: boolean = false;
   @Output() rowButtonClick = new EventEmitter<ActionInfo>();

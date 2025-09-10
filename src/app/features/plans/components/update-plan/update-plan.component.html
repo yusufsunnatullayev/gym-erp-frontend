@@ -1,11 +1,4 @@
-<p-dialog
-  header="Update plan"
-  [modal]="true"
-  [(visible)]="visible"
-  [style]="{ width: '25rem' }"
-  (onHide)="form.reset(); visible.set(false)"
-  styleClass="dark:bg-neutral-800/50 dark:backdrop-blur-md"
->
+<app-modal [(visible)]="visible" header="Update plan">
   <form
     [formGroup]="form"
     (ngSubmit)="onSubmit()"
@@ -18,7 +11,7 @@
         pInputText
         id="name"
         placeholder="Premium"
-        class="dark:bg-neutral-800 dark:text-white border-none"
+        class="bg-gray-50 dark:bg-neutral-800 dark:text-white border-none"
         formControlName="name"
       />
       @if (form.get('name')?.touched && form.get('name')?.invalid) {
@@ -36,7 +29,7 @@
         optionValue="code"
         placeholder="Select a duration"
         appendTo="body"
-        class="dark:bg-neutral-800 dark:text-white border-none"
+        class="bg-gray-50 dark:bg-neutral-800 dark:text-white border-none"
         formControlName="duration"
       ></p-select>
 
@@ -52,7 +45,7 @@
         size="small"
         inputId="integeronly"
         placeholder="13"
-        inputStyleClass="dark:bg-neutral-800 dark:text-white border-none"
+        inputStyleClass="bg-gray-50 dark:bg-neutral-800 dark:text-white border-none"
         formControlName="price"
       />
       @if (form.get('price')?.touched && form.get('price')?.invalid) {
@@ -70,4 +63,4 @@
       <span pButtonLabel>{{ loading() ? "Saving..." : "Save" }}</span>
     </button>
   </form>
-</p-dialog>
+</app-modal>

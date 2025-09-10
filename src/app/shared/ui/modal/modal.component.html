@@ -1,0 +1,11 @@
+<p-dialog
+  [(visible)]="visible"
+  [modal]="true"
+  [header]="header()"
+  [style]="{ width: width() }"
+  [closable]="closable()"
+  (onHide)="close()"
+  styleClass="dark:bg-neutral-800/50 dark:backdrop-blur-md"
+>
+  <ng-content></ng-content>
+</p-dialog>

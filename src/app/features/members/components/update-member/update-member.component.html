@@ -1,4 +1,4 @@
-<app-modal [(visible)]="visible" [width]="'30rem'" header="Add member">
+<app-modal [(visible)]="visible" [width]="'30rem'" header="Update member">
   <form
     [formGroup]="form"
     (ngSubmit)="onSubmit()"
@@ -95,7 +95,7 @@
       pButton
       class="dark:text-white text-sm font-medium"
     >
-      <span pButtonLabel>{{ loading() ? "Adding..." : "Add" }}</span>
+      <span pButtonLabel>{{ loading() ? "Saving..." : "Save" }}</span>
     </button>
   </form>
 </app-modal>

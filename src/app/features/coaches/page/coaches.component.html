@@ -1,1 +1,84 @@
-<h1>Coaches</h1>
+<section class="w-full p-5 flex flex-col gap-5">
+  <!-- Header -->
+  <div class="w-full flex items-center justify-between mb-2">
+    <h1 class="text-2xl font-semibold">Coaches</h1>
+    <button
+      (click)="showAddDialog()"
+      pButton
+      class="dark:text-white text-sm font-medium"
+    >
+      <lucide-icon
+        [img]="PlusIcon"
+        [size]="20"
+        color="white"
+        class="my-icon"
+      ></lucide-icon>
+      <span pButtonLabel>Add coach</span>
+    </button>
+  </div>
+
+  @if (isInitialLoading) {
+  <app-loader />
+  } @else { @if (hasPlans || search()) {
+  <div class="w-full flex justify-end">
+    <p-iconfield
+      iconPosition="left"
+      class="ml-auto flex items-center rounded-md pl-2 p-1.5 gap-2 border-[0.5px] border-[#CBD5E1] dark:border-[#52525B] bg-white dark:bg-neutral-800"
+    >
+      <lucide-icon
+        [img]="SearchIcon"
+        [size]="18"
+        color="gray"
+        class="my-icon"
+      ></lucide-icon>
+      <input
+        pInputText
+        type="text"
+        placeholder="Search..."
+        class="border-none focus:outline-none rounded-r-md placeholder:text-gray-400 text-sm font-medium"
+        (input)="onSearchInput($event)"
+        [value]="search()"
+        [disabled]="isSearchLoading"
+      />
+    </p-iconfield>
+  </div>
+  } @if (hasPlans) {
+  <app-table
+    [columns]="columns"
+    [data]="coachService.coaches()"
+    [rows]="perPage()"
+    [hasDetailPage]="true"
+    (rowButtonClick)="handleRowClick($event)"
+  />
+
+  <app-pagination
+    [totalPages]="coachService.coaches().meta.total_pages"
+    [perPage]="perPage()"
+    [(page)]="page"
+  />
+  } @else if (showNoDataMessage) {
+  <div class="w-full h-72 flex flex-col items-center justify-center gap-4">
+    <div class="text-5xl">📋</div>
+    <div class="text-xl font-medium text-gray-600 dark:text-gray-400">
+      @if (search()) { No coaches found for "{{ search() }}" } @else { No
+      coaches found }
+    </div>
+    @if (search()) {
+    <button
+      (click)="clearSearch()"
+      class="text-blue-500 hover:text-blue-700 text-sm font-medium"
+    >
+      Clear search
+    </button>
+    } @else {
+    <p class="text-sm text-gray-500 dark:text-gray-400 text-center max-w-md">
+      Get started by creating your first coach. Click the "Add coach" button
+      above.
+    </p>
+    }
+  </div>
+  } }
+
+  <!-- Modals -->
+  <app-add-coach [(visible)]="addDialogVisible" />
+</section>

@@ -1,10 +1,12 @@
 <section class="w-full p-5 flex flex-col gap-5">
+  <!-- Header -->
   <div class="w-full flex items-center justify-between mb-2">
     <h1 class="text-2xl font-semibold">Plans</h1>
     <button
       (click)="showAddDialog()"
       pButton
       class="dark:text-white text-sm font-medium"
+      [disabled]="isInitialLoading"
     >
       <lucide-icon
         [img]="PlusIcon"
@@ -16,8 +18,9 @@
     </button>
   </div>
 
-  @if(plansService.loading()) { <app-loader />
-  } @else {
+  @if (isInitialLoading) {
+  <app-loader />
+  } @else { @if (hasPlans || search()) {
   <div class="w-full flex justify-end">
     <p-iconfield
       iconPosition="left"
@@ -35,22 +38,49 @@
         placeholder="Search..."
         class="border-none focus:outline-none rounded-r-md placeholder:text-gray-400 text-sm font-medium"
         (input)="onSearchInput($event)"
+        [value]="search()"
+        [disabled]="isSearchLoading"
       />
     </p-iconfield>
   </div>
-
-  <!-- Table that shows plans 🚩 -->
+  } @if (hasPlans) {
   <app-table
     [columns]="columns"
-    [data]="plansService.plans() || []"
-    [rows]="5"
+    [data]="plansService.plans()"
+    [rows]="perPage()"
     [hasDetailPage]="false"
     (rowButtonClick)="handleRowClick($event)"
   />
 
-  }
+  <app-pagination
+    [totalPages]="plansService.plans().meta.total_pages"
+    [perPage]="perPage()"
+    [(page)]="page"
+  />
+  } @else if (showNoDataMessage) {
+  <div class="w-full h-72 flex flex-col items-center justify-center gap-4">
+    <div class="text-5xl">📋</div>
+    <div class="text-xl font-medium text-gray-600 dark:text-gray-400">
+      @if (search()) { No plans found for "{{ search() }}" } @else { No plans
+      found }
+    </div>
+    @if (search()) {
+    <button
+      (click)="clearSearch()"
+      class="text-blue-500 hover:text-blue-700 text-sm font-medium"
+    >
+      Clear search
+    </button>
+    } @else {
+    <p class="text-sm text-gray-500 dark:text-gray-400 text-center max-w-md">
+      Get started by creating your first plan. Click the "Add plan" button
+      above.
+    </p>
+    }
+  </div>
+  } }
 
-  <!-- Modals 🚩 -->
+  <!-- Modals -->
   <app-delete-plan [(visible)]="deleteDialogVisible" [id]="selectedId()" />
   <app-update-plan [(visible)]="updateDialogVisible" [id]="selectedId()" />
   <app-add-plan [(visible)]="addDialogVisible" />

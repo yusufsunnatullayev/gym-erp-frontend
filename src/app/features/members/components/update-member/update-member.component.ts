@@ -1,4 +1,12 @@
-import { Component, inject, model, OnInit, signal } from '@angular/core';
+import {
+  Component,
+  inject,
+  input,
+  model,
+  OnInit,
+  signal,
+  effect,
+} from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputMaskModule } from 'primeng/inputmask';
@@ -16,6 +24,7 @@ import { CoachesService } from '@app/features/coaches/services/coaches.service';
 import { PlansService } from '@app/features/plans/services/plans.service';
 import { IOption } from '@app/core/models/option.interface';
 import { Select } from 'primeng/select';
+import { MemberModel } from '../../model/member.model'; // Assuming you have a member model
 
 @Component({
   imports: [
@@ -27,22 +36,49 @@ import { Select } from 'primeng/select';
     ModalComponent,
     Select,
   ],
-  selector: 'app-add-member',
-  templateUrl: './add-member.component.html',
+  selector: 'app-update-member',
+  templateUrl: './update-member.component.html',
   standalone: true,
 })
-export class AddMemberComponent implements OnInit {
+export class UpdateMemberComponent implements OnInit {
   visible = model<boolean>(false);
+  id = input<string>('');
+
   memberService = inject(MembersService);
   coachsService = inject(CoachesService);
   plansService = inject(PlansService);
   toastService = inject(ToastService);
+  memberDetail = signal<MemberModel | null>(null);
+
+  private loadMember(id: string) {
+    this.memberService.getMemberById(id).subscribe((member) => {
+      this.memberDetail.set(member);
+      // Transform the data to match form structure if needed
+      const formData = {
+        ...member,
+        // Handle phone number formatting if it comes with +998 prefix
+        phoneNumber: member.phoneNumber?.startsWith('+998')
+          ? member.phoneNumber.substring(4)
+          : member.phoneNumber,
+        // Ensure date is properly formatted for the date picker
+        startDate: member.startDate ? new Date(member.startDate) : null,
+      };
+      this.form.patchValue(formData);
+    });
+  }
 
   form!: FormGroup;
   loading = signal(false);
   coaches = signal<IOption[]>([]);
   plans = signal<IOption[]>([]);
-  constructor(private fb: FormBuilder) {}
+
+  constructor(private fb: FormBuilder) {
+    effect(() => {
+      if (this.id()) {
+        this.loadMember(this.id());
+      }
+    });
+  }
 
   ngOnInit(): void {
     this.form = this.fb.group({
@@ -60,6 +96,7 @@ export class AddMemberComponent implements OnInit {
       }));
       this.coaches.set(options);
     });
+
     this.plansService.fetchPlans(1, 100).subscribe((data) => {
       const options = data.data.map((item) => ({
         name: item.name,
@@ -98,22 +135,22 @@ export class AddMemberComponent implements OnInit {
           payload.phoneNumber = '+998' + cleaned;
         } else {
           this.loading.set(false);
-          this.toastService.error('Error', 'Telefon raqam noto‘g‘ri formatda!');
+          this.toastService.error('Error', "Telefon raqam noto'g'ri formatda!");
           return;
         }
       }
 
-      this.memberService.addMember(payload).subscribe({
+      this.memberService.updateMember(this.id(), payload).subscribe({
         next: () => {
           this.visible.set(false);
           this.form.reset();
           this.loading.set(false);
-          this.toastService.success('Success', 'Coach added!');
+          this.toastService.success('Success', 'Member updated!');
         },
         error: (err) => {
-          console.error('Error adding coach:', err);
+          console.error('Error updating member:', err);
           this.loading.set(false);
-          this.toastService.error('Error', 'Failed to add new coach!');
+          this.toastService.error('Error', 'Failed to update member!');
         },
       });
     } else {
